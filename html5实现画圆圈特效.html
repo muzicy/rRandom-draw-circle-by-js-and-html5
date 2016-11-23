@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>html5实现随机画圆圈效果</title>
+
+<style>
+
+  #drawing {border:1px solid black;}
+  
+</style>
+</head>
+
+<body>
+
+<canvas id='drawing' width='1000px' height='500px'>您的浏览器不支持canvas</canvas>
+
+<input id='bt' type='button' value='画图' />
+
+</body>
+<script>
+
+var drawing=document.getElementById('drawing');
+var oBt=document.getElementById('bt');
+
+var  n=100,
+     ctx, 
+     radius,
+	 x,
+	 y,
+	 step=0,
+	 startAg=0,
+	 endAg=0,
+	 timer;
+	 
+var addAg=Math.PI*2/n;
+	 
+if (drawing.getContext('2d')){
+  ctx=drawing.getContext('2d');
+};
+
+function randnum(start,end){
+ return Math.round(Math.random()*(end-start+1)+start);
+};
+
+function color (){
+
+ var str = randnum(0,0xffffff).toString(16);
+ 
+ while (str.length<6) str+='0';
+ 
+ return '#'+str; 
+ 
+ };
+ 
+ ctx.shadowBlur=10;
+ ctx.shadowOffsetX=0;
+ ctx.shadowOffsetY=0;
+ ctx.lineWidth=1.0;
+
+oBt.onclick=function(){
+   step=0;
+   radius=randnum(10,50);
+   x=randnum(50,950);
+   y=randnum(50,450);
+   ctx.strokeStyle=color();
+   ctx.shadowColor=color();
+   timer=setInterval(animation,10);
+
+}
+
+function animation(){
+  if(step<n){
+    endAg=endAg+addAg;
+    drawCircle(startAg,endAg)
+    startAg=endAg;    
+	step++;
+  }else{
+  clearInterval(timer);
+  }
+}
+
+function drawCircle(s,e){
+
+   ctx.beginPath();   
+   ctx.arc(x,y,radius,s,e,false);
+   ctx.stroke();
+   ctx.closePath();
+ 
+}
+   
+</script>
+</html>
